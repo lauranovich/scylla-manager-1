@@ -1,0 +1,365 @@
+
+
+
+<!doctype html>
+<html class="no-js" lang="en">
+  
+<head><!-- begin head.html -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+    Restore | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server."/>
+
+    <link rel="icon" href="../_static/img/favicon.ico" type="image/x-icon"/>
+    <link rel="canonical" href="https://docs.scylladb.com/">
+    <link rel="author" href="mailto:info@scylladb.com">
+    <link rel="stylesheet" href="../_static/" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/tabs.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/css/doc/main.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css"/>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+
+    <script src="../_static/js/vendor/modernizr.js"></script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T8P2JP');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Marketo -->
+    <script type="text/javascript"> (function() { var didInit = false; function initMunchkin() { if(didInit === false) { didInit = true; Munchkin.init('791-QBF-350'); } } var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//munchkin.marketo.net/munchkin.js'; s.onreadystatechange = function() { if (this.readyState == 'complete' || this.readyState == 'loaded') { initMunchkin(); } }; s.onload = initMunchkin; document.getElementsByTagName('head')[0].appendChild(s); })(); </script>
+    <!-- End Marketo -->
+
+<!-- end head.html -->
+</head>
+
+<body>
+
+
+
+<header id="header" class="animated">
+    <div class="topbar_continer contain-to-grid clearfix">
+        <nav class="top-bar" id="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <div class="logo">
+                        <a href="https://docs.scylladb.com/"><img src="../_static/img/logo-scylla-docs.svg" alt="" width="151"></a>
+                    </div>
+                </li>
+                <li class="toggle-topbar"><a href="#"><span class="icon-manu"></span></a></li>
+            </ul>
+            <section class="top-bar-section clearfix">
+                <ul class="right">
+                    
+                    <li>
+                        <a href="https://manager.docs.scylladb.com/">Scylla Manager</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://scylladb.github.io/scylla-monitoring/">Scylla Monitor</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://docs.scylladb.com/scylla-cloud/">Scylla Cloud</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://university.scylladb.com/">Scylla University</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.scylladb.com/">ScyllaDB Home</a>
+                    </li>
+                    
+                    <li class="search_continer show-for-medium-up">	
+                        <ci-search></ci-search>	
+                    </li>	
+                </ul>
+            </section>
+        </nav>
+    </div>
+</header>
+<section id="content">
+    <div class="row">
+	
+	<div class="large-6 large-push-3 columns">
+
+        
+
+        <section id="restore">
+<h1>Restore<a class="headerlink" href="#restore" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>The following procedure lets you restore data to a new cluster to get a cluster clone from snapshots stored in a backup location.
+It is implemented as an Ansible playbook in <a class="reference external" href="https://github.com/scylladb/scylla-ansible-roles/tree/master/example-playbooks/restore_scylla_manager_backup">scylla-ansible-roles</a> repository.</p>
+<p><strong>Prerequisites</strong></p>
+<ol class="arabic simple">
+<li><p>New cluster with the same number of nodes as the source cluster.</p></li>
+<li><p>Scylla Manager Agent installed on all the nodes.</p></li>
+<li><p>Access to the backup location from all the nodes.</p></li>
+<li><p>Ansible installed on your local machine.</p></li>
+<li><p>Access to all the nodes over SSH from your local machine.</p></li>
+</ol>
+<p>If you do not know the exact number of nodes of the source cluster, you can create a single node cluster and discover the number in the process.
+In fact you can use any Scylla node with Scylla Manager Agent installed that has access to the backup location for getting the parameters.
+Note that there is no need for Scylla Manager Server installation prior to restore.</p>
+<section id="ansible">
+<h2>Ansible<a class="headerlink" href="#ansible" title="Permalink to this headline">¶</a></h2>
+<p>Cloning the cluster is automated as an Ansible playbook.
+The playbook has a <a class="reference external" href="https://github.com/scylladb/scylla-ansible-roles/tree/master/example-playbooks/restore_scylla_manager_backup">readme</a> that explains how to use it.
+For reader’s convenience it’s repeated here.</p>
+<section id="getting-the-playbook">
+<h3>Getting the playbook<a class="headerlink" href="#getting-the-playbook" title="Permalink to this headline">¶</a></h3>
+<p><strong>Procedure</strong></p>
+<ol class="arabic simple">
+<li><p>Clone repository from GitHub <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;github.com:scylladb/scylla-ansible-roles.git</span></code></p></li>
+<li><p>Go to playbook directory <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">scylla-ansible-roles/example-playbooks/restore_scylla_manager_backup</span></code></p></li>
+</ol>
+</section>
+<section id="playbook-parameters">
+<h3>Playbook parameters<a class="headerlink" href="#playbook-parameters" title="Permalink to this headline">¶</a></h3>
+<p>All restore parameters shall be put to <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.
+Copy <code class="docutils literal notranslate"><span class="pre">vars.yaml.example</span></code> as <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and change parameters to match your clusters.</p>
+<section id="ip-to-host-id-mapping">
+<h4>IP to host ID mapping<a class="headerlink" href="#ip-to-host-id-mapping" title="Permalink to this headline">¶</a></h4>
+<p>SSH to one of the nodes and execute the following command:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>scylla-manager-agent download-files -L &lt;backup-location&gt; --list-nodes
+</pre></div>
+</div>
+<p>it gives you information about all the clusters and nodes available in the backup location.</p>
+<p>Example output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Cluster: prod (a9dcc6e1-17dc-4520-9e03-0a92011c823c)
+AWS_EU_CENTRAL_1:
+- 18.198.164.180 (7e68421b-acb1-44a7-a1a8-af7eaf1bb482)
+- 3.122.35.120 (adc0a3ce-dade-4672-981e-26f91a3d35cb)
+- 3.127.175.215 (2a575244-3e3c-44a1-a526-da4394f9525e)
+- 3.65.85.108 (82f0f486-370d-4cfd-90ac-46464c8012cb)
+- 3.66.209.145 (9ee92c19-5f78-4865-a287-980218963d96)
+- 3.66.44.239 (aff05f79-7c69-4ecf-a827-5ea790a0fdc6)
+
+Cluster: test (da5721cd-e2eb-4d10-a3a7-f729b8f72abf)
+AWS_EU_CENTRAL_1:
+- 3.123.55.215 (4001206a-3377-40cb-abd4-d38aad5dec41)
+- 3.127.1.189 (c6466011-02f9-49dd-8951-c32028dfc6f1)
+- 3.64.219.214 (bc39bb07-7a21-41cd-b576-51d44c1a694a)
+</pre></div>
+</div>
+<p>For each node IP in the new cluster you need to assign a host ID (UUID in the listing above).
+The mapping must be put into <code class="docutils literal notranslate"><span class="pre">host_id</span></code> variable in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
+</section>
+<section id="snapshot-tag">
+<h4>Snapshot tag<a class="headerlink" href="#snapshot-tag" title="Permalink to this headline">¶</a></h4>
+<p>To list available snapshot tags for a node use <code class="docutils literal notranslate"><span class="pre">--list-snapshots</span></code> flag.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>scylla-manager-agent download-files -L &lt;backup-location&gt; --list-snapshots -n &lt;host-id&gt;
+</pre></div>
+</div>
+<p>You can filter snapshot tags containing a specific keyspaces or tables by using glob patterns.
+The parameter <code class="docutils literal notranslate"><span class="pre">-K,</span> <span class="pre">--keyspace</span> <span class="pre">&lt;list</span> <span class="pre">of</span> <span class="pre">glob</span> <span class="pre">patterns</span> <span class="pre">to</span> <span class="pre">find</span> <span class="pre">keyspaces&gt;</span></code> lets you do that.
+It works the same way as in scheduling backups or repairs with Scylla Manager.</p>
+<p>The snapshot ID must be put into <code class="docutils literal notranslate"><span class="pre">snapshot_tag</span></code> variable in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
+</section>
+<section id="inventory">
+<h4>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h4>
+<p>Put public IP addresses of all nodes to <code class="docutils literal notranslate"><span class="pre">hosts</span></code> file.</p>
+</section>
+</section>
+<section id="running-the-playbook">
+<h3>Running the playbook<a class="headerlink" href="#running-the-playbook" title="Permalink to this headline">¶</a></h3>
+<p>Rut the playbook:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ansible-playbook -i hosts -e @vars.yaml restore.yaml
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+        </div>
+
+        <div id="sidebar" class="large-3 large-pull-6 columns"><div class="side-nav">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install-scylla-manager.html">Install Scylla Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install-scylla-manager-agent.html">Install Scylla Manager Agent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add-a-cluster.html">Add a Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backup/index.html">Backup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Restore</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download-files-command.html">Download files command</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../repair/index.html">Repair</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../health-check.html">Health Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sctool/index.html">CLI sctool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swagger/index.html">Swagger File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scylla-monitoring.html">Scylla Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../older-versions.html">Older Versions</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://scylladb-users.slack.com/archives/C01ERVBPWLU">Slack</a></li>
+</ul>
+
+</div>
+        </div>
+
+        <div class="large-3 columns">
+            
+                <div class="scylla-dropdown ">
+    <a href="#" data-options="align:bottom" data-dropdown="drop-versions" class="scylla-dropdown__button">
+        
+            2.4
+        
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-versions" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+            
+              <li><a href="../../branch-2.5/restore/index.html">2.5</a></li>
+            
+            
+              <li><a href="index.html">2.4</a></li>
+            
+            
+              <li><a href="../../branch-2.3/restore/index.html">2.3</a></li>
+            
+            
+              <li><a href="../../branch-2.2/restore/index.html">2.2</a></li>
+            
+            
+    </ul>
+</div>
+            
+        </div>
+
+    </div>
+</section>
+
+<!-- newsleter modal -->
+
+<div id="newsletter_signup" class="reveal-modal tiny radius dark_modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <a class="close-reveal-modal" aria-label="Close">×</a>
+    <h2 id="modalTitle">Sign up for the Scylla newsletter</h2>
+    <div id="mc_embed_signup">
+        <form action="//cloudius-systems.us10.list-manage.com/subscribe/post?u=df8bb543c68230d5f7b4dcf78&amp;id=9a4589f144" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+            <div id="mc_embed_signup_scroll">
+
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-EMAIL">Email</label></div>
+                        <div class="small-9 columns"><input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-FNAME">First Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="FNAME" class="" id="mce-FNAME"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-LNAME">Last Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="LNAME" class="" id="mce-LNAME"></div>
+                    </div>
+                </div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;"><input type="text" name="b_df8bb543c68230d5f7b4dcf78_9a4589f144" tabindex="-1" value=""></div>
+                <div class="clear"><input type="submit" class="button" value="Sign up" name="subscribe" id="mc-embedded-subscribe"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- end newsleter modal -->
+
+
+
+<!-- footer.html -->
+<footer id="footer">
+    <div class="footer-top">
+        <a class="logo" href="https://www.scylladb.com"><img src="../_static/img/logo-scylla-horizontal-RGB.svg" alt=""></a>
+        <div class="footer-links">
+            <a class="link" href="https://docs.scylladb.com">Docs</a>
+            <a class="link" href="https://www.scylladb.com/company/contact-us/">Contact Us</a>
+            <a class="link" href="https://www.scylladb.com/company/">About Us</a>
+          <div class="scylla-dropdown">
+    <a href="#" data-options="align:top" data-dropdown="drop-contribute" class="scylla-dropdown__button">
+        Contribute 
+        <i class="fa fa-github" aria-hidden="true"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-contribute" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+        <li><a href="https://github.com/scylladb/scylla-manager/issues/new?title=Issue in page Restore&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://manager.docs.scylladb.com/branch-2.4/restore/index%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix" target="_blank">Report a doc issue <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+        <li><a href="https://docs.scylladb.com/contribute/" target="_blank">Learn how to contribute <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+    </ul>
+</div>
+        </div>
+        <div class="footer-actions">
+            <a class="link-icon" href="https://github.com/ScyllaDB" target="_blank">
+                <span class="icon-github2"></span></a>
+            <a class="link-icon" href="https://twitter.com/ScyllaDB" target="_blank">
+                <span class="icon-twitter"></span></a>
+            <a class="link-icon" href="https://www.linkedin.com/company/scylladb"  target="_blank">
+                <span class="icon-linkedin2"></span></a>
+            <a class="link-icon" href="https://www.facebook.com/scylladb/" target="_blank">
+                <span class="icon-facebook"></span></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="footer-info">
+            <div class="footer-copyright">
+                &#169; 2021, ScyllaDB. All rights reserved.
+            </div>
+            <div class="footer-last-updated">
+                Last updated on 09 August 2021.
+            </div>
+            <div class="footer-version">
+                Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+                &amp; <a href="https://sphinx-theme.scylladb.com">ScyllaDB Theme 0.1.25</a>
+            </div>
+        </div>
+        <div class="footer-links">
+        </div>
+    </div>
+</footer>
+<!-- end footer.html -->
+
+<!-- bodyscripts.html -->
+<!-- at the end of the BODY --> 
+<script src="../_static/js/vendor/jquery.js"></script>
+<script src="../_static/js/vendor/jquery.cookie.min.js"></script>
+<script src="../_static/expertrec.js"></script>
+<script src="../_static/js/foundation/foundation.js"></script>
+<script src="../_static/js/foundation/foundation.topbar.js"></script>
+<script src="../_static/js/foundation/foundation.dropdown.js"></script>
+<script src="../_static/app.js"></script>
+<script>
+    $(document).foundation();
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <!-- end bodyscripts.html -->
+</body>
+</html>
